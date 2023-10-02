@@ -1,5 +1,5 @@
 import userRouter from './userRouter';
-import postRouter from './userRouter';
+import postRouter from './postRouter';
 
 
 export {postRouter, userRouter}

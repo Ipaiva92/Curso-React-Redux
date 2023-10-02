@@ -1,9 +1,10 @@
 import { postController } from "../controllers";
 import { Router } from "express";
+import {authenticateJWT} from "../middleware";
 
 const router = Router();
 
-router.post("/post", async (req, res) => {
+router.post("/post", authenticateJWT ,async (req, res) => {
   postController.create(req, res);
 });
 
