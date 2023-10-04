@@ -12,17 +12,20 @@ model User {
   createdAt DateTime @default(now())
   email     String   @unique
   name      String?
-  posts     Post[]
   password  String
 }
 
-model Post {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  published Boolean  @default(false)
-  title     String
-  content   String
-  author    User?    @relation(fields: [authorId], references: [id])
-  authorId  Int?
+model EstimateProject {
+  id            Int           @id @default(autoincrement())
+  clientId      Int
+  clientName    ClientProject @relation(fields: [clientId], references: [id])
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  estimateHours Int
+}
+
+model ClientProject {
+  id              Int               @id @default(autoincrement())
+  clientName      String
+  estimateProject EstimateProject[]
 }

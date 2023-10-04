@@ -1,9 +1,9 @@
 import express from "express";
-import {postRouter, userRouter} from "./routes";
+import {clientRouter, userRouter} from "./routes";
 
 const app = express();
 app.use(express.json());
-app.use(postRouter);
+app.use(clientRouter);
 app.use(userRouter);
 const port = 3000;
 

@@ -1,9 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import jwt from "jsonwebtoken";
 import { prisma } from "../prismaClient";
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
-
-
 
 const saltRounds = 10;
 
@@ -26,20 +25,16 @@ export default {
   login: async (req: Request, res: Response) => {
     const { email, password } = req.body ?? {};
     try {
-
-
       const login = await prisma.user.findUnique({ where: { email } });
       const match = await bcrypt.compare(password, String(login?.password));
 
       if (login?.email !== email || !match) {
-
-        return res.json({ success: false, message: "User not found" });
+        return res.json({ success: false, message: "User not found." });
       }
-      const token = jwt.sign({ email: email }, 'password');
+      const token = jwt.sign({ email: email }, "password");
       res.json({ jwt: `Bearer ${token}` });
-
     } catch (err) {
-      return { success: false, message: "Incorrect password" };
+      return { success: false, message: "Incorrect user." };
     } finally {
       await prisma.$disconnect();
     }

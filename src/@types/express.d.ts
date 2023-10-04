@@ -1,7 +1,11 @@
 declare namespace Express {
   interface Request {
-    user?: string | JwtPayload  | {
-      email? : string;
-    } | undefined;
+    user?:
+      | string
+      | JwtPayload
+      | {
+          email?: string;
+        }
+      | undefined;
   }
 }

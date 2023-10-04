@@ -1,5 +1,4 @@
-import userRouter from './userRouter';
-import postRouter from './postRouter';
+import userRouter from "./userRouter";
+import clientRouter from "./clientRouter";
 
-
-export {postRouter, userRouter}
+export { clientRouter, userRouter };
