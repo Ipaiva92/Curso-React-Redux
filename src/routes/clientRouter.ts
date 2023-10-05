@@ -9,8 +9,4 @@ router.post("/Client/CreateClient", validate(clientCreateSchema) ,authenticateJW
   clientController.createClient(req, res);
 });
 
-router.post("/Client/CreateProject" ,authenticateJWT ,async (req, res) => {
-  clientController.createProject(req, res);
-});
-
 export default router;

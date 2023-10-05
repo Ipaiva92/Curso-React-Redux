@@ -8,15 +8,23 @@ const saltRounds = 10;
 
 export default {
   createUser: async (req: Request, res: Response) => {
-    const { email, password, name, confirmPassword } = req.body ?? {};
+    const { email, password, fullName, confirmPassword, birthDate  } = req.body ?? {};
 
     const hash = await bcrypt.hash(password, saltRounds);
+
+    const splitFullName = fullName.split('')
+    const firstName = splitFullName[0];
+    const middleName = splitFullName[1];
+    const lastName = splitFullName.slice(-1)
 
     const user = await prisma.user.create({
       data: {
         email: email,
         password: hash,
-        name: name,
+        firstName: firstName,
+        middleName: middleName,
+        lastName: lastName,
+        birthDate: birthDate,
       },
     });
     res.json(user);
@@ -31,6 +39,7 @@ export default {
       if (login?.email !== email || !match) {
         return res.json({ success: false, message: "User not found." });
       }
+
       const token = jwt.sign({ email: email }, "password");
       res.json({ jwt: `Bearer ${token}` });
     } catch (err) {

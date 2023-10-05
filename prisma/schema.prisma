@@ -1,5 +1,5 @@
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -8,24 +8,72 @@ generator client {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  email     String   @unique
-  name      String?
-  password  String
+  id         String   @id @unique @default(uuid())
+  type       Role     @default(Member)
+  firstName  String
+  middleName String
+  lastName   String
+  email      String   @unique
+  password   String
+  birthDate  DateTime
 }
 
-model EstimateProject {
-  id            Int           @id @default(autoincrement())
-  clientId      Int
-  clientName    ClientProject @relation(fields: [clientId], references: [id])
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-  estimateHours Int
+model Manager {
+  id      String    @id @default(uuid())
+  Project Project[]
 }
 
-model ClientProject {
-  id              Int               @id @default(autoincrement())
-  clientName      String
-  estimateProject EstimateProject[]
+model Member {
+  id             String           @id @default(uuid())
+  hourlyRate     String
+  memberRole     MemberRole
+  Member_Project Member_Project[]
+  Member_Task    Member_Task[]
+}
+
+model Project {
+  id             String           @id @default(uuid())
+  name           String
+  manager        Manager          @relation(fields: [managerId], references: [id])
+  managerId      String
+  Member_Project Member_Project[]
+  Task           Task[]
+}
+
+model Member_Project {
+  id        String  @id @default(uuid())
+  project   Project @relation(fields: [projectId], references: [id])
+  projectId String
+  member    Member  @relation(fields: [memberId], references: [id])
+  memberId  String
+}
+
+model Member_Task {
+  id       String @id @default(uuid())
+  task     Task   @relation(fields: [taskId], references: [id])
+  taskId   String
+  member   Member @relation(fields: [memberId], references: [id])
+  memberId String
+}
+
+model Task {
+  id              String        @id @default(uuid())
+  name            String
+  description     String
+  project         Project       @relation(fields: [projectId], references: [id])
+  projectId       String
+  estimatedLength String
+  Member_Task     Member_Task[]
+}
+
+enum Role {
+  Member
+  Manager
+}
+
+enum MemberRole {
+  Front_End
+  Bakc_End
+  PO
+  QA
 }

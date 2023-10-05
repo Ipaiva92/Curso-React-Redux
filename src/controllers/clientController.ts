@@ -10,16 +10,5 @@ export default {
       },
     });
     res.json(client);
-  },
-  createProject: async (req: Request, res: Response) => {
-    const { clientId,clientName, estimateHours } = req.body ?? {};
-    const client = await prisma.estimateProject.create({
-      data: {
-        clientId: clientId,
-        clientName: clientName,
-        estimateHours: estimateHours
-      },
-    });
-    res.json(client);
-  },
+  }
 };
