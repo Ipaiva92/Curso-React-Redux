@@ -1,9 +1,8 @@
-
 import { z } from "zod";
 const userCreateSchema = z.object({
   body: z
     .object({
-      name: z
+      fullName: z
         .string({
           required_error: "Full name is required.",
         })
@@ -18,6 +17,21 @@ const userCreateSchema = z.object({
       confirmPassword: z.string({
         required_error: "Confirm Password is required.",
       }),
+      birthDate: z.string({
+          required_error: "Please select a date and time.",
+          invalid_type_error: "That's not a date!",
+        }).pipe( z.coerce.date() )
+        .refine(
+          (date) => {
+            const ageDifMs = Date.now() - date.getTime();
+            const ageDate = new Date(ageDifMs);
+
+            const age = Math.abs(ageDate.getUTCFullYear() - 1970);
+
+            return age >= 18;
+          },
+          { message: "You must be 18 years or older" }
+        ),
       email: z
         .string({
           required_error: "Email is required.",
@@ -44,6 +58,5 @@ const userLoginSchema = z.object({
       .email("Not a valid email."),
   }),
 });
-
 
 export { userCreateSchema, userLoginSchema };

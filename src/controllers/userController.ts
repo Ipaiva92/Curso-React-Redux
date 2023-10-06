@@ -12,10 +12,10 @@ export default {
 
     const hash = await bcrypt.hash(password, saltRounds);
 
-    const splitFullName = fullName.split('')
+    const splitFullName = fullName.split(' ')
     const firstName = splitFullName[0];
     const middleName = splitFullName[1];
-    const lastName = splitFullName.slice(-1)
+    const lastName = splitFullName[2]
 
     const user = await prisma.user.create({
       data: {
