@@ -17,10 +17,12 @@ const userCreateSchema = z.object({
       confirmPassword: z.string({
         required_error: "Confirm Password is required.",
       }),
-      birthDate: z.string({
+      birthDate: z
+        .string({
           required_error: "Please select a date and time.",
           invalid_type_error: "That's not a date!",
-        }).pipe( z.coerce.date() )
+        })
+        .pipe(z.coerce.date())
         .refine(
           (date) => {
             const ageDifMs = Date.now() - date.getTime();
