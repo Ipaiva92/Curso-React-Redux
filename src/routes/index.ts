@@ -1,4 +1,5 @@
 import userRouter from "./userRouter";
-import clientRouter from "./clientRouter";
+import managerRouter from "./managerRouter";
+import permissionRouter from "./permissionRouter";
 
-export { clientRouter, userRouter };
+export { managerRouter, userRouter, permissionRouter };

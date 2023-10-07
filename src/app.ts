@@ -1,10 +1,11 @@
 import express from "express";
-import {clientRouter, userRouter} from "./routes";
+import {managerRouter, permissionRouter, userRouter} from "./routes";
 
 const app = express();
 app.use(express.json());
-app.use(clientRouter);
+app.use(managerRouter);
 app.use(userRouter);
+app.use(permissionRouter)
 const port = 3000;
 
 const start = (): void => {
