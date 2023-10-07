@@ -8,26 +8,40 @@ const saltRounds = 10;
 
 export default {
   createUser: async (req: Request, res: Response) => {
-    const { email, password, fullName, confirmPassword, birthDate  } = req.body ?? {};
+    const { email, password, fullName, confirmPassword, birthDate } =
+      req.body ?? {};
+    try {
+      const existingUser = await prisma.user.findUnique({
+        where: { email: email },
+      });
 
-    const hash = await bcrypt.hash(password, saltRounds);
+      if (existingUser) {
+        res.json({ success: false, message: "User already exist." });
+      }
 
-    const splitFullName = fullName.split(' ')
-    const firstName = splitFullName[0];
-    const middleName = splitFullName[1];
-    const lastName = splitFullName[2]
+      const hash = await bcrypt.hash(password, saltRounds);
 
-    const user = await prisma.user.create({
-      data: {
-        email: email,
-        password: hash,
-        firstName: firstName,
-        middleName: middleName,
-        lastName: lastName,
-        birthDate: birthDate,
-      },
-    });
-    res.json(user);
+      const splitFullName = fullName.split(" ");
+      const firstName = splitFullName[0];
+      const middleName = splitFullName[1];
+      const lastName = splitFullName[2];
+
+      const user = await prisma.user.create({
+        data: {
+          email: email,
+          password: hash,
+          firstName: firstName,
+          middleName: middleName,
+          lastName: lastName,
+          birthDate: birthDate,
+        },
+      });
+      res.json(user);
+    } catch (err) {
+      res.json({ success: false, message: "Error on create user." });
+    } finally {
+      await prisma.$disconnect();
+    }
   },
 
   login: async (req: Request, res: Response) => {
