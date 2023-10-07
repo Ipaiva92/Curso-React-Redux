@@ -1,4 +1,5 @@
-// import clientController from "./clientController";
+import managerController from "./managerController";
 import userController from "./userController";
+import permissionController from "./permissionController";
 
-export { userController }
+export { userController, managerController, permissionController }
