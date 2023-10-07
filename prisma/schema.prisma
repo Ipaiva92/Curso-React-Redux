@@ -20,11 +20,13 @@ model User {
 
 model Manager {
   id      String    @id @default(uuid())
+  userId  String
   Project Project[]
 }
 
 model Member {
   id             String           @id @default(uuid())
+  userId         String
   hourlyRate     String
   memberRole     MemberRole
   Member_Project Member_Project[]
