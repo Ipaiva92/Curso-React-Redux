@@ -3,26 +3,29 @@ import { Request, Response } from "express";
 
 export default {
   createProject: async (req: Request, res: Response) => {
-    const { name, managerEmail } = req.body ?? {};
+    const { name, userId } = req.body ?? {};
 
-      const createProject = await prisma.project.create({
-        data: {
-          name: name,
-          manager: { connect: { id: managerEmail } },
-        }
-      });
-      res.json(createProject);
+    const managerId = await prisma.manager.findFirst({
+      where: { userId: userId },
+      select: { id: true },
+    });
 
-
+    const createProject = await prisma.project.create({
+      data: {
+        name: name,
+        manager: { connect: { id: managerId?.id } },
+      },
+    });
+    res.json(createProject);
   },
   createManager: async (req: Request, res: Response) => {
     const { userId } = req.body ?? {};
     const findUser = await prisma.user.findUnique({ where: { id: userId } });
-    const findManager = await prisma.manager.findMany({
+    const findManager = await prisma.manager.findFirst({
       where: { userId: userId },
     });
 
-    if (findUser && !findManager.length) {
+    if (findUser && !findManager) {
       const createManager = await prisma.manager.create({
         data: {
           userId: userId,
