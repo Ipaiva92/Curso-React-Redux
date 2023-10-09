@@ -13,6 +13,7 @@ export default {
     try {
       const existingUser = await prisma.user.findUnique({
         where: { email: email },
+        select: { email: true },
       });
 
       if (existingUser) {
@@ -47,7 +48,10 @@ export default {
   login: async (req: Request, res: Response) => {
     const { email, password } = req.body ?? {};
     try {
-      const login = await prisma.user.findUnique({ where: { email } });
+      const login = await prisma.user.findUnique({
+        where: { email },
+        select: { email: true, password: true, type: true },
+      });
       const match = await bcrypt.compare(password, String(login?.password));
 
       if (login?.email !== email || !match) {
