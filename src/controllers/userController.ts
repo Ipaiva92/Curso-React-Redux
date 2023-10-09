@@ -54,7 +54,8 @@ export default {
         return res.json({ success: false, message: "User not found." });
       }
 
-      const token = jwt.sign({ email: email }, "password");
+      const token = jwt.sign({ email: email, type: login?.type }, "password");
+
       res.json({ jwt: `Bearer ${token}` });
     } catch (err) {
       return { success: false, message: "Incorrect user." };
