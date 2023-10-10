@@ -17,7 +17,7 @@ export default {
       });
 
       if (existingUser) {
-        res.json({ success: false, message: "User already exist." });
+        res.status(400).json({ success: false, message: "User already exist." });
       }
 
       const hash = await bcrypt.hash(password, saltRounds);
@@ -37,9 +37,9 @@ export default {
           birthDate: birthDate,
         },
       });
-      res.json(user);
+      res.status(201).json(user);
     } catch (err) {
-      res.json({ success: false, message: "Error on create user." });
+      res.status(400).json({ success: false, message: "Error on create user." });
     } finally {
       await prisma.$disconnect();
     }
@@ -55,14 +55,14 @@ export default {
       const match = await bcrypt.compare(password, String(login?.password));
 
       if (login?.email !== email || !match) {
-        return res.json({ success: false, message: "User not found." });
+        return res.status(400).json({ success: false, message: "User not found." });
       }
 
       const token = jwt.sign({ email: email, type: login?.type }, "password");
 
-      res.json({ jwt: `Bearer ${token}` });
+      res.status(200).json({ jwt: `Bearer ${token}` });
     } catch (err) {
-      return { success: false, message: "Incorrect user." };
+      return res.status(400).json({ success: false, message: "Incorrect user." });
     } finally {
       await prisma.$disconnect();
     }
