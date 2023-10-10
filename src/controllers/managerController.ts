@@ -16,7 +16,7 @@ export default {
         manager: { connect: { id: managerId?.id } },
       },
     });
-    res.json(createProject);
+    res.status(201).json(createProject);
   },
   createManager: async (req: Request, res: Response) => {
     const { userId } = req.body ?? {};
@@ -31,9 +31,9 @@ export default {
           userId: userId,
         },
       });
-      res.json(createManager);
+      res.status(201).json(createManager);
     } else {
-      res.json({ success: false, message: "Failed to create manager." });
+      res.status(400).json({ success: false, message: "Failed to create manager." });
     }
   },
 };

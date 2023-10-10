@@ -11,9 +11,9 @@ export default {
         type: type,
       },
     });
-    res.json({ success: true, message: `Change Permission successfully.` });
+    res.status(200).json({ success: true, message: `Change Permission successfully.` });
   } catch ( err) {
-    res.json({ error: err, message: "Failed to change permission." });
+    res.status(400).json({ error: err, message: "Failed to change permission." });
   }
 },
 
