@@ -1,12 +1,19 @@
 import express from "express";
-import {managerRouter, permissionRouter, userRouter, memberRouter } from "./routes";
+import {
+  managerRouter,
+  permissionRouter,
+  userRouter,
+  memberRouter,
+  taskRouter,
+} from "./routes";
 
 const app = express();
 app.use(express.json());
 app.use(managerRouter);
 app.use(userRouter);
-app.use(permissionRouter)
-app.use(memberRouter)
+app.use(permissionRouter);
+app.use(taskRouter);
+app.use(memberRouter);
 const port = 3000;
 
 const start = (): void => {
