@@ -32,4 +32,43 @@ export default {
       await prisma.$disconnect();
     }
   },
+  associateTask: async (req: Request, res: Response) => {
+    const { memberId, taskType, taskId, projectId } = req.body ?? {};
+    try {
+      const member = await prisma.member.findUnique({
+        where: { id: memberId },
+        select: {
+          id: true,
+        },
+      });
+      const project = await prisma.project.findUnique({
+        where: { id: projectId },
+        select: { id: true },
+      });
+      const task = await prisma.task.findUnique({
+        where: { id: taskId },
+        select: { id: true },
+      });
+      if (task && project && member) {
+        const associateTask = await prisma.member_Task.create({
+          data: {
+            taskType: taskType,
+            taskId: taskId,
+            memberId: memberId,
+            projectId: projectId,
+          },
+        });
+        res.status(201).json(associateTask);
+      } else {
+        res.status(400).json({
+          success: false,
+          message: "Invalid project, member or task id.",
+        });
+      }
+    } catch (err) {
+      res
+        .status(400)
+        .json({ success: false, message: "Error to associate task." });
+    }
+  },
 };
