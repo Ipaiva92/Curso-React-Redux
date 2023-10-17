@@ -14,7 +14,7 @@ app.use(userRouter);
 app.use(permissionRouter);
 app.use(taskRouter);
 app.use(memberRouter);
-const port = 3000;
+const port = 3333;
 
 const start = (): void => {
   try {
