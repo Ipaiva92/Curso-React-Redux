@@ -69,6 +69,20 @@ export default {
       res
         .status(400)
         .json({ success: false, message: "Error to associate task." });
+    } finally {
+      await prisma.$disconnect();
+    }
+  },
+  getAllTasks: async (req: Request, res: Response) => {
+    try {
+      const allTasks = await prisma.task.findMany({});
+      res.status(200).json(allTasks);
+    } catch (err) {
+      res
+        .status(400)
+        .json({ success: false, message: "Error to get all tasks." });
+    } finally {
+      await prisma.$disconnect();
     }
   },
 };
