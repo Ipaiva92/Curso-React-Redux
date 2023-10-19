@@ -12,4 +12,8 @@ router.post("/Task/AssociateTask", authenticateJWT, (req, res) => {
   taskController.associateTask(req, res);
 });
 
+router.get("/Task/GetAllTasks", authenticateJWT, (req, res) => {
+  taskController.getAllTasks(req, res);
+});
+
 export default router;

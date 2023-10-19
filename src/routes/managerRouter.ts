@@ -24,4 +24,13 @@ router.post(
   }
 );
 
+router.get(
+  "/Manager/GetAllProjects",
+  authenticateJWT,
+  checkPermission,
+  async (req, res) => {
+    managerController.getAllProjects(req, res);
+  }
+);
+
 export default router;
