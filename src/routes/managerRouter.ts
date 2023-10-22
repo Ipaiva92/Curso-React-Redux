@@ -33,4 +33,8 @@ router.get(
   }
 );
 
+router.get("/Manager/GetProjectDetails", async (req, res) => {
+  managerController.getProjectDetails(req, res);
+})
+
 export default router;
