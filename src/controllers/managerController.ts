@@ -65,4 +65,29 @@ export default {
       await prisma.$disconnect();
     }
   },
+  getProjectDetails: async (req: Request, res: Response) => {
+    try {
+      const projectId = req.query.projectId;
+
+      if (!projectId) {
+        res.status(404).json({ error: "Failed to find ProjectId." });
+        return;
+      }
+      if (typeof projectId !== "string") {
+        res.status(500).json({ error: "Invalid projectId." });
+        return;
+      }
+
+      const project = await prisma.project.findUnique({
+        where: { id: projectId },
+      });
+      res.status(200).json(project);
+    } catch (err) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Failed to get Project." });
+    } finally {
+      await prisma.$disconnect();
+    }
+  },
 };
